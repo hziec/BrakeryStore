@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bakery Store</string>
+    <string name="product_name_placeholder">Tên sản phẩm</string>
+    <string name="category_placeholder">Danh mục</string>
+    <string name="price_placeholder">0đ</string>
+    <string name="rating_placeholder">⭐ 0.0 (0)</string>
+    <string name="btn_view_details">Chi tiết</string>
+    <string name="login_loading">Đang đăng nhập...</string>
+    <string name="login_success">Đăng nhập thành công</string>
+    <string name="login_failed">Email hoặc mật khẩu không đúng</string>
+    <string name="server_connection_error">Không kết nối được server: %1$s</string>
+    <string name="error_empty_email">Vui lòng nhập email</string>
+    <string name="error_invalid_email">Email không hợp lệ</string>
+    <string name="error_empty_password">Vui lòng nhập mật khẩu</string>
+    <string name="btn_login">Đăng nhập</string>
+    <string name="register_loading">Đang đăng ký...</string>
+    <string name="register_success">Đăng ký thành công, hãy đăng nhập</string>
+    <string name="register_failed">Đăng ký thất bại. Email có thể đã tồn tại</string>
+    <string name="error_empty_fullname">Vui lòng nhập họ tên</string>
+    <string name="error_empty_phone">Vui lòng nhập số điện thoại</string>
+    <string name="error_password_short">Mật khẩu phải có ít nhất 6 ký tự</string>
+    <string name="error_password_mismatch">Mật khẩu nhập lại không khớp</string>
+    <string name="error_terms_not_accepted">Bạn cần đồng ý điều khoản</string>
+    <string name="btn_register">Đăng ký</string>
+    <string name="add_to_cart">Thêm vào giỏ hàng</string>
+</resources>

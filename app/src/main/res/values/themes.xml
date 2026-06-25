@@ -1,0 +1,21 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.BakeryStore" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/caramel</item>
+        <item name="colorPrimaryVariant">@color/caramel_dark</item>
+        <item name="colorOnPrimary">@color/text_white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/rose_pink</item>
+        <item name="colorSecondaryVariant">@color/rose_pink</item>
+        <item name="colorOnSecondary">@color/text_white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
+        <!-- Global Font -->
+        <item name="android:fontFamily">serif</item>
+        <item name="fontFamily">serif</item>
+        <item name="android:typeface">serif</item>
+        <!-- Customize your theme here. -->
+    </style>
+</resources>
