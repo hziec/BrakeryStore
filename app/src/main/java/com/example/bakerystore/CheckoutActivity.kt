@@ -102,6 +102,7 @@ class CheckoutActivity : AppCompatActivity() {
 
         ApiClient.apiService.getCartByUser(sessionManager.getUserId())
             .enqueue(object : Callback<CartResponse> {
+
                 @SuppressLint("SetTextI18n")
                 override fun onResponse(
                     call: Call<CartResponse>,
@@ -131,8 +132,8 @@ class CheckoutActivity : AppCompatActivity() {
 
                     Toast.makeText(
                         this@CheckoutActivity,
-                        "Không tải được tổng tiền",
-                        Toast.LENGTH_SHORT
+                        "Không tải được tổng tiền: ${t.message}",
+                        Toast.LENGTH_LONG
                     ).show()
                 }
             })
@@ -281,6 +282,7 @@ class CheckoutActivity : AppCompatActivity() {
 
         ApiClient.apiService.checkout(request)
             .enqueue(object : Callback<CheckoutResponse> {
+
                 override fun onResponse(
                     call: Call<CheckoutResponse>,
                     response: Response<CheckoutResponse>
@@ -288,9 +290,11 @@ class CheckoutActivity : AppCompatActivity() {
                     btnPlaceOrder.isEnabled = true
                     btnPlaceOrder.text = "Xác Nhận Đặt Hàng"
 
-                    if (response.isSuccessful && response.body() != null) {
-                        val checkoutResponse = response.body()!!
-                        val msg = checkoutResponse.message
+                    if (response.isSuccessful) {
+                        val checkoutResponse = response.body()
+
+                        val msg = checkoutResponse?.message ?: "Đặt hàng thành công"
+                        val orderId = checkoutResponse?.orderId ?: 0
 
                         Toast.makeText(
                             this@CheckoutActivity,
@@ -298,12 +302,18 @@ class CheckoutActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        showSuccessDialog(checkoutResponse.orderId)
+                        showSuccessDialog(orderId)
                     } else {
+                        val errorMessage = try {
+                            response.errorBody()?.string()
+                        } catch (e: Exception) {
+                            null
+                        } ?: "Đặt hàng thất bại"
+
                         Toast.makeText(
                             this@CheckoutActivity,
-                            "Đặt hàng thất bại",
-                            Toast.LENGTH_SHORT
+                            errorMessage,
+                            Toast.LENGTH_LONG
                         ).show()
                     }
                 }
@@ -329,8 +339,6 @@ class CheckoutActivity : AppCompatActivity() {
             .setCancelable(false)
             .create()
 
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
         dialogView.findViewById<Button>(R.id.btnViewOrder).setOnClickListener {
             dialog.dismiss()
 
@@ -351,5 +359,7 @@ class CheckoutActivity : AppCompatActivity() {
         }
 
         dialog.show()
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 }
