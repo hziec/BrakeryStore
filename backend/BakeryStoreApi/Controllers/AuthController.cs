@@ -38,8 +38,10 @@ namespace BakeryStoreApi.Controllers
                 });
             }
 
+            var email = request.Email.Trim();
+
             var emailExists = await _context.Users
-                .AnyAsync(x => x.Email == request.Email);
+                .AnyAsync(x => x.Email == email);
 
             if (emailExists)
             {
@@ -52,7 +54,7 @@ namespace BakeryStoreApi.Controllers
             var user = new User
             {
                 FullName = request.FullName.Trim(),
-                Email = request.Email.Trim(),
+                Email = email,
                 PasswordHash = request.Password,
                 Phone = request.Phone,
                 Role = "User",
@@ -84,9 +86,11 @@ namespace BakeryStoreApi.Controllers
                 });
             }
 
+            var email = request.Email.Trim();
+
             var user = await _context.Users
                 .FirstOrDefaultAsync(x =>
-                    x.Email == request.Email &&
+                    x.Email == email &&
                     x.PasswordHash == request.Password);
 
             if (user == null)
@@ -104,6 +108,102 @@ namespace BakeryStoreApi.Controllers
                 Email = user.Email,
                 Phone = user.Phone,
                 Role = user.Role
+            });
+        }
+
+        [HttpPost("forgot-password/check-email")]
+        public async Task<ActionResult<MessageResponse>> CheckForgotPasswordEmail(ForgotPasswordCheckRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Email))
+            {
+                return BadRequest(new MessageResponse
+                {
+                    Message = "Vui lòng nhập email"
+                });
+            }
+
+            var email = request.Email.Trim();
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x => x.Email == email);
+
+            if (user == null)
+            {
+                return NotFound(new MessageResponse
+                {
+                    Message = "Email không tồn tại"
+                });
+            }
+
+            return Ok(new MessageResponse
+            {
+                Message = "Email tồn tại"
+            });
+        }
+
+        [HttpPost("forgot-password/reset")]
+        public async Task<ActionResult<MessageResponse>> ResetPassword(ResetPasswordRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Email))
+            {
+                return BadRequest(new MessageResponse
+                {
+                    Message = "Vui lòng nhập email"
+                });
+            }
+
+            if (string.IsNullOrWhiteSpace(request.NewPassword))
+            {
+                return BadRequest(new MessageResponse
+                {
+                    Message = "Vui lòng nhập mật khẩu mới"
+                });
+            }
+
+            if (string.IsNullOrWhiteSpace(request.ConfirmPassword))
+            {
+                return BadRequest(new MessageResponse
+                {
+                    Message = "Vui lòng xác nhận mật khẩu"
+                });
+            }
+
+            if (request.NewPassword.Length < 6)
+            {
+                return BadRequest(new MessageResponse
+                {
+                    Message = "Mật khẩu phải có ít nhất 6 ký tự"
+                });
+            }
+
+            if (request.NewPassword != request.ConfirmPassword)
+            {
+                return BadRequest(new MessageResponse
+                {
+                    Message = "Mật khẩu xác nhận không khớp"
+                });
+            }
+
+            var email = request.Email.Trim();
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x => x.Email == email);
+
+            if (user == null)
+            {
+                return NotFound(new MessageResponse
+                {
+                    Message = "Email không tồn tại"
+                });
+            }
+
+            user.PasswordHash = request.NewPassword;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new MessageResponse
+            {
+                Message = "Đổi mật khẩu thành công"
             });
         }
     }

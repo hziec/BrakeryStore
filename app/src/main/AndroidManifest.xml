@@ -11,43 +11,60 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BakeryStore"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".ProfileActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".HistoryActivity"
             android:exported="false" />
+
         <activity
             android:name=".CheckoutActivity"
             android:exported="false" />
+
         <activity
             android:name=".CartActivity"
             android:exported="false" />
+
         <activity
             android:name=".ProductDetailActivity"
             android:exported="false" />
+
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ForgetPasswordActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
+
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+
         <activity
             android:name=".SplashActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
     </application>
 
 </manifest>

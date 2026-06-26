@@ -21,20 +21,20 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="serif"
             android:text="Bakery Store"
             android:textColor="@color/brown_text"
             android:textSize="32sp"
-            android:textStyle="bold"
-            android:fontFamily="serif" />
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
+            android:fontFamily="serif"
             android:text="Tiệm bánh ngọt dành cho bạn"
             android:textColor="@color/soft_gray"
-            android:textSize="14sp"
-            android:fontFamily="serif" />
+            android:textSize="14sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -70,18 +70,31 @@
                 android:textColor="@color/brown_text"
                 android:textColorHint="@color/soft_gray" />
 
+            <TextView
+                android:id="@+id/tvForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="10dp"
+                android:fontFamily="serif"
+                android:padding="4dp"
+                android:text="Quên mật khẩu?"
+                android:textColor="@color/brown_text"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
-                android:layout_marginTop="22dp"
+                android:layout_marginTop="18dp"
                 android:background="@drawable/bg_button_pink"
+                android:fontFamily="serif"
                 android:text="Đăng nhập"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:fontFamily="serif" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvGoRegister"
@@ -89,11 +102,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
+                android:fontFamily="serif"
                 android:text="Chưa có tài khoản? Đăng ký ngay"
                 android:textColor="@color/brown_text"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                android:fontFamily="serif" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 

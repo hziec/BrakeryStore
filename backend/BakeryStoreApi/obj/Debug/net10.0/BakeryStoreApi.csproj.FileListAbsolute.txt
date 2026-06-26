@@ -159,3 +159,4 @@ D:\BakeryStore\backend\BakeryStoreApi\obj\Debug\net10.0\refint\BakeryStoreApi.dl
 D:\BakeryStore\backend\BakeryStoreApi\obj\Debug\net10.0\BakeryStoreApi.pdb
 D:\BakeryStore\backend\BakeryStoreApi\obj\Debug\net10.0\BakeryStoreApi.genruntimeconfig.cache
 D:\BakeryStore\backend\BakeryStoreApi\obj\Debug\net10.0\ref\BakeryStoreApi.dll
+D:\BakeryStore\backend\BakeryStoreApi\obj\Debug\net10.0\BakeryStoreApi.sourcelink.json

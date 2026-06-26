@@ -1,56 +1,137 @@
 package com.example.bakerystore.utils
 
 object ProductImageUtils {
-    /**
-     * Trả về URL hình ảnh chất lượng cao thực tế từ internet (Unsplash) 
-     * dựa trên danh mục và tên sản phẩm mà người dùng yêu cầu.
-     */
+
+    private const val APP_PACKAGE = "com.example.bakerystore"
+
     fun getProductImageUrl(productName: String, apiImageUrl: String?): String {
-        if (!apiImageUrl.isNullOrEmpty()) {
-            return apiImageUrl
+        if (!apiImageUrl.isNullOrBlank()) {
+            return convertImageNameToDrawableUri(apiImageUrl)
         }
 
-        val name = productName.lowercase()
+        val imageFileName = getImageFileNameByProductName(productName)
+        return convertImageNameToDrawableUri(imageFileName)
+    }
+
+    private fun convertImageNameToDrawableUri(imageName: String): String {
+        val cleanName = imageName
+            .trim()
+            .lowercase()
+            .replace(".jpg", "")
+            .replace(".jpeg", "")
+            .replace(".png", "")
+            .replace("-", "_")
+            .replace(" ", "_")
+
+        return "android.resource://$APP_PACKAGE/drawable/$cleanName"
+    }
+
+    private fun getImageFileNameByProductName(productName: String): String {
+        val name = productName.lowercase().trim()
+
         return when {
-            // --- BÁNH KEM (Cake) ---
-            name.contains("kem dâu") -> "https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=800"
-            name.contains("kem socola") -> "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800"
-            name.contains("kem matcha") || (name.contains("kem") && name.contains("trà xanh")) -> "https://images.unsplash.com/photo-1582716401301-b2407dc7563d?auto=format&fit=crop&w=800"
-            name.contains("kem phô mai") -> "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=800"
-            name.contains("kem trái cây") -> "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=800"
-            
-            // --- BÁNH CẮT LÁT (Slices & Rolls) ---
-            name.contains("bông lan") && name.contains("lát") -> "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&w=800"
-            name.contains("cuộn socola") -> "https://images.unsplash.com/photo-1621236322928-85476635293d?auto=format&fit=crop&w=800"
-            name.contains("cuộn dâu") -> "https://images.unsplash.com/photo-1516054144838-f7bc40402206?auto=format&fit=crop&w=800"
-            name.contains("cuộn matcha") -> "https://images.unsplash.com/photo-1550617931-e17a7b70dce2?auto=format&fit=crop&w=800"
-            name.contains("cuộn phô mai") -> "https://images.unsplash.com/photo-1551404660-67468162870e?auto=format&fit=crop&w=800"
+            // ProductId 1
+            name.contains("bánh kem dâu") || name.contains("kem dâu") ->
+                "banh_kem_dau.jpg"
 
-            // --- BÁNH LẠNH & TRÁNG MIỆNG (Cold & Desserts) ---
-            name.contains("tiramisu") -> "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=800"
-            name.contains("caramel") || name.contains("pudding") -> "https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=800"
-            name.contains("mousse socola") -> "https://images.unsplash.com/photo-1541783245831-57d6fb0926d3?auto=format&fit=crop&w=800"
-            name.contains("mousse dâu") -> "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800"
-            name.contains("cheesecake") || (name.contains("phô mai") && name.contains("lạnh")) -> "https://images.unsplash.com/photo-1524351199679-46cddf33273a?auto=format&fit=crop&w=800"
+            // ProductId 2
+            name.contains("bánh kem socola") || name.contains("kem socola") ->
+                "banh_kem_socola.jpg"
 
-            // --- BÁNH MÌ & BÁNH MẶN (Bread & Savory) ---
-            name.contains("bơ tỏi") -> "https://images.unsplash.com/photo-1586444248902-2f64eddf13cf?auto=format&fit=crop&w=800"
-            name.contains("sandwich") -> "https://images.unsplash.com/photo-1539252554452-da098e21f435?auto=format&fit=crop&w=800"
-            name.contains("chà bông") -> "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800"
-            name.contains("bánh mì phô mai") -> "https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=800"
-            name.contains("trứng muối") -> "https://images.unsplash.com/photo-1512152272829-e3139592d56f?auto=format&fit=crop&w=800"
+            // ProductId 3
+            name.contains("tiramisu") ->
+                "banh_tiramisu.jpg"
 
-            // --- BÁNH KHÔ (Cookies) ---
-            name.contains("quy bơ") -> "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=800"
-            name.contains("socola chip") -> "https://images.unsplash.com/photo-1558961359-1d99283f085c?auto=format&fit=crop&w=800"
-            name.contains("hạnh nhân") -> "https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=800"
-            name.contains("quy dừa") -> "https://images.unsplash.com/photo-1590080875515-8a03ca09733d?auto=format&fit=crop&w=800"
-            name.contains("quy") || name.contains("cookie") || name.contains("matcha") || name.contains("trà xanh") -> "https://images.unsplash.com/photo-1619860860774-1e2e17343432?auto=format&fit=crop&w=800"
+            // ProductId 4
+            name.contains("bơ tỏi") ->
+                "banh_mi_bo_toi.jpg"
 
-            // --- MẶC ĐỊNH (Cho các sản phẩm khác) ---
-            name.contains("kem") || name.contains("cake") -> "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800"
-            name.contains("bánh mì") || name.contains("mì") -> "https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=800"
-            else -> "https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=800"
+            // ProductId 5
+            name.contains("quy bơ") ->
+                "banh_quy_bo.jpg"
+
+            // ProductId 6
+            name.contains("kem matcha") ->
+                "banh_kem_matcha.jpg"
+
+            // ProductId 7
+            name.contains("kem phô mai") || name.contains("kem pho mai") ->
+                "banh_kem_pho_mai.jpg"
+
+            // ProductId 8
+            name.contains("kem trái cây") || name.contains("kem trai cay") ->
+                "banh_kem_trai_cay.jpg"
+
+            // ProductId 9
+            name.contains("bông lan cắt lát") || name.contains("bong lan cat lat") ->
+                "banh_bong_lan_cat_lat.jpg"
+
+            // ProductId 10
+            name.contains("cuộn socola") || name.contains("cuon socola") ->
+                "banh_cuon_socola.jpg"
+
+            // ProductId 11
+            name.contains("cuộn dâu") || name.contains("cuon dau") ->
+                "banh_cuon_dau.jpg"
+
+            // ProductId 12
+            name.contains("cuộn matcha") || name.contains("cuon matcha") ->
+                "banh_cuon_matcha.jpg"
+
+            // ProductId 13
+            name.contains("cuộn kem phô mai") || name.contains("cuon kem pho mai") ->
+                "banh_cuon_kem_pho_mai.jpg"
+
+            // ProductId 14
+            name.contains("pudding caramel") || name.contains("caramel") ->
+                "pudding_caramel.jpg"
+
+            // ProductId 15
+            name.contains("mousse socola") ->
+                "mousse_socola.jpg"
+
+            // ProductId 16
+            name.contains("mousse dâu") || name.contains("mousse dau") ->
+                "mousse_dau.jpg"
+
+            // ProductId 17
+            name.contains("cheesecake") ->
+                "cheesecake_lanh.jpg"
+
+            // ProductId 18
+            name.contains("sandwich") ->
+                "banh_mi_sandwich.jpg"
+
+            // ProductId 19
+            name.contains("chà bông") || name.contains("cha bong") ->
+                "banh_mi_cha_bong.jpg"
+
+            // ProductId 20
+            name.contains("bánh mì phô mai") || name.contains("banh mi pho mai") ->
+                "banh_mi_pho_mai.jpg"
+
+            // ProductId 21
+            name.contains("trứng muối") || name.contains("trung muoi") ->
+                "banh_mi_trung_muoi.jpg"
+
+            // ProductId 22
+            name.contains("socola chip") ->
+                "banh_quy_socola_chip.jpg"
+
+            // ProductId 23
+            name.contains("hạnh nhân") || name.contains("hanh nhan") ->
+                "banh_quy_hanh_nhan.jpg"
+
+            // ProductId 24
+            name.contains("quy dừa") || name.contains("quy dua") ->
+                "banh_quy_dua.jpg"
+
+            // ProductId 25
+            name.contains("trà xanh") || name.contains("tra xanh") ->
+                "banh_quy_tra_xanh.jpg"
+
+            else ->
+                "banh_kem_dau.jpg"
         }
     }
 }

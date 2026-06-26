@@ -22,6 +22,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var edtPassword: EditText
     private lateinit var btnLogin: Button
     private lateinit var tvGoRegister: TextView
+    private lateinit var tvForgotPassword: TextView
     private lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +42,7 @@ class LoginActivity : AppCompatActivity() {
         edtPassword = findViewById(R.id.edtPassword)
         btnLogin = findViewById(R.id.btnLogin)
         tvGoRegister = findViewById(R.id.tvGoRegister)
+        tvForgotPassword = findViewById(R.id.tvForgotPassword)
 
         btnLogin.setOnClickListener {
             handleLogin()
@@ -48,6 +50,10 @@ class LoginActivity : AppCompatActivity() {
 
         tvGoRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
+        }
+
+        tvForgotPassword.setOnClickListener {
+            startActivity(Intent(this, ForgetPasswordActivity::class.java))
         }
     }
 

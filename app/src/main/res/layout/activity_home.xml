@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,35 +21,16 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvHello"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Xin chào"
-                android:textColor="@color/soft_gray"
-                android:textSize="14sp"
-                android:fontFamily="serif" />
+            <TextView android:id="@+id/tvHello" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Xin chào" android:textColor="@color/soft_gray" android:textSize="14sp" android:fontFamily="serif"
+                tools:ignore="HardcodedText" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bakery Store 🧁"
-                android:textColor="@color/brown_text"
-                android:textSize="23sp"
-                android:textStyle="bold"
-                android:fontFamily="serif" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bakery Store 🧁" android:textColor="@color/brown_text" android:textSize="23sp" android:textStyle="bold" android:fontFamily="serif"
+                tools:ignore="HardcodedText" />
 
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/btnProfile"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:background="@drawable/bg_input"
-            android:contentDescription="Hồ sơ"
-            android:src="@drawable/ic_person"
-            android:padding="10dp"
-            android:scaleType="centerInside" />
+        <ImageButton android:id="@+id/btnProfile" android:layout_width="44dp" android:layout_height="44dp" android:background="@drawable/bg_input" android:contentDescription="Hồ sơ" android:src="@drawable/ic_person" android:padding="10dp" android:scaleType="centerInside"
+            tools:ignore="HardcodedText" />
 
         <ImageButton
             android:id="@+id/btnCart"
@@ -59,7 +41,8 @@
             android:contentDescription="Giỏ hàng"
             android:src="@drawable/ic_cart"
             android:padding="10dp"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            tools:ignore="HardcodedText" />
 
     </LinearLayout>
 
@@ -87,17 +70,11 @@
                 android:textColor="@color/brown_text"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:fontFamily="serif" />
+                android:fontFamily="serif"
+                tools:ignore="HardcodedText" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="Bánh mới mỗi ngày\nNgọt ngào từng khoảnh khắc"
-                android:textColor="@color/brown_text"
-                android:textSize="21sp"
-                android:textStyle="bold"
-                android:fontFamily="serif" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp" android:text="Bánh mới mỗi ngày\nNgọt ngào từng khoảnh khắc" android:textColor="@color/brown_text" android:textSize="21sp" android:textStyle="bold" android:fontFamily="serif"
+                tools:ignore="HardcodedText" />
 
         </LinearLayout>
 
@@ -105,24 +82,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="🍓"
-            android:textSize="62sp" />
+            android:textSize="62sp"
+            tools:ignore="HardcodedText" />
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/edtSearch"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="18dp"
-        android:background="@drawable/bg_input"
-        android:hint="Tìm bánh kem, tiramisu, cupcake..."
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:singleLine="true"
-        android:textColor="@color/brown_text"
-        android:textColorHint="@color/soft_gray" />
+    <EditText android:id="@+id/edtSearch" android:layout_width="match_parent" android:layout_height="50dp" android:layout_marginStart="18dp" android:layout_marginTop="14dp" android:layout_marginEnd="18dp" android:background="@drawable/bg_input" android:hint="Tìm bánh kem, tiramisu, cupcake..." android:paddingStart="16dp" android:paddingEnd="16dp" android:singleLine="true" android:textColor="@color/brown_text" android:textColorHint="@color/soft_gray"
+        tools:ignore="Autofill,HardcodedText,TextFields" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCategories"

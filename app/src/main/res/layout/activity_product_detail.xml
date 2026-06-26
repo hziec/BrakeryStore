@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/beige_bg">
@@ -39,6 +40,7 @@
                 app:navigationIcon="@drawable/ic_back_circle" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -65,10 +67,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="serif"
                     android:textColor="@color/brown_text"
                     android:textSize="26sp"
-                    android:textStyle="bold"
-                    android:fontFamily="serif" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvRatingDetail"
@@ -77,10 +79,12 @@
                     android:background="@drawable/bg_rating_pill"
                     android:paddingHorizontal="12dp"
                     android:paddingVertical="4dp"
-                    android:text="⭐ 4.8"
+                    android:text="⭐ 5"
                     android:textColor="@color/brown_text"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+
             </LinearLayout>
 
             <TextView
@@ -88,10 +92,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:fontFamily="serif"
                 android:textColor="@color/pink_dark"
                 android:textSize="22sp"
-                android:textStyle="bold"
-                android:fontFamily="serif" />
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -104,11 +108,12 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="serif"
                     android:text="Số lượng mua"
                     android:textColor="@color/brown_text"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:fontFamily="serif" />
+                    tools:ignore="HardcodedText" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -133,7 +138,8 @@
                         android:text="1"
                         android:textColor="@color/brown_text"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
 
                     <ImageButton
                         android:id="@+id/btnPlusDetail"
@@ -142,48 +148,53 @@
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:src="@drawable/ic_plus"
                         app:tint="@color/brown_text" />
+
                 </LinearLayout>
+
             </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:fontFamily="serif"
                 android:text="Mô tả sản phẩm"
                 android:textColor="@color/brown_text"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:fontFamily="serif" />
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:id="@+id/tvDescriptionDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:lineSpacingExtra="6dp"
-                android:textColor="@color/soft_gray"
-                android:textSize="15sp"
-                android:fontFamily="serif" />
+                android:layout_marginTop="10dp"
+                android:fontFamily="serif"
+                android:lineSpacingExtra="7dp"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
+                android:fontFamily="serif"
                 android:text="Gợi ý thêm cho bạn"
                 android:textColor="@color/brown_text"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:fontFamily="serif" />
+                tools:ignore="HardcodedText" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvRelatedProducts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:clipToPadding="false"
-                android:layout_marginBottom="100dp" />
+                android:layout_marginBottom="100dp"
+                android:clipToPadding="false" />
 
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
@@ -209,12 +220,14 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:background="@drawable/bg_button_pink"
+            android:fontFamily="serif"
             android:text="Thêm vào giỏ hàng"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:fontFamily="serif" />
+            tools:ignore="HardcodedText" />
+
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

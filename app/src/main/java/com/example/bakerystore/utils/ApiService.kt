@@ -28,22 +28,26 @@ import retrofit2.http.Query
 
 interface ApiService {
 
-    // =========================
-    // AUTH
-    // =========================
     @POST("auth/login")
     fun login(
         @Body request: LoginRequest
     ): Call<AuthResponse>
-
     @POST("auth/register")
     fun register(
         @Body request: RegisterRequest
     ): Call<AuthResponse>
 
-    // =========================
+    @POST("auth/forgot-password/check-email")
+    fun checkForgotPasswordEmail(
+        @Body request: com.example.bakerystore.models.ForgotPasswordCheckRequest
+    ): Call<MessageResponse>
+
+    @POST("auth/forgot-password/reset")
+    fun resetPassword(
+        @Body request: com.example.bakerystore.models.ResetPasswordRequest
+    ): Call<MessageResponse>
+
     // CATEGORIES
-    // =========================
     @GET("categories")
     fun getCategories(): Call<List<CategoryResponse>>
 
@@ -51,10 +55,7 @@ interface ApiService {
     fun getCategoryById(
         @Path("id") categoryId: Int
     ): Call<CategoryResponse>
-
-    // =========================
     // PRODUCTS
-    // =========================
     @GET("products")
     fun getProducts(
         @Query("categoryId") categoryId: Int? = null,
@@ -65,10 +66,7 @@ interface ApiService {
     fun getProductById(
         @Path("id") productId: Int
     ): Call<ProductResponse>
-
-    // =========================
     // CART
-    // =========================
     @GET("cart/user/{userId}")
     fun getCartByUser(
         @Path("userId") userId: Int
