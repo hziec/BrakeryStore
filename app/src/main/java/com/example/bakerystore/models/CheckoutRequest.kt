@@ -1,5 +1,7 @@
 package com.example.bakerystore.models
 
+import com.google.gson.annotations.SerializedName
+
 data class CheckoutRequest(
     val userId: Int,
     val receiverName: String,
@@ -8,5 +10,8 @@ data class CheckoutRequest(
     val city: String,
     val district: String,
     val ward: String,
-    val paymentMethod: String
+    val paymentMethod: String,
+
+    @SerializedName("cartItemIds")
+    val cartItemIds: List<Int>
 )

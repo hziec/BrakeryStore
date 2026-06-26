@@ -1,5 +1,6 @@
 package com.example.bakerystore.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,10 +59,10 @@ class CartAdapter(
             } else {
                 selectedIds.remove(item.cartItemId)
             }
+
             onSelectionChange()
         }
 
-        // Sử dụng ProductImageUtils để lấy hình ảnh chất lượng cao nếu cần
         val displayImageUrl = com.example.bakerystore.utils.ProductImageUtils.getProductImageUrl(
             item.productName,
             item.imageUrl
@@ -92,12 +93,14 @@ class CartAdapter(
         return items.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(newItems: List<CartItemResponse>) {
+        val currentItemIds = newItems.map { it.cartItemId }.toSet()
+
+        selectedIds.retainAll(currentItemIds)
+
         items.clear()
         items.addAll(newItems)
-
-        selectedIds.clear()
-        selectedIds.addAll(newItems.map { it.cartItemId })
 
         notifyDataSetChanged()
     }

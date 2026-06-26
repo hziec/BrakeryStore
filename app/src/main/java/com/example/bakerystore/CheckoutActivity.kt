@@ -1,18 +1,17 @@
 package com.example.bakerystore
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.bakerystore.models.CartResponse
 import com.example.bakerystore.models.CheckoutRequest
 import com.example.bakerystore.models.CheckoutResponse
 import com.example.bakerystore.utils.ApiClient
@@ -26,6 +25,7 @@ import java.util.Locale
 @Suppress("DEPRECATION")
 class CheckoutActivity : AppCompatActivity() {
 
+    private lateinit var tvCheckoutTitle: TextView
     private lateinit var tvTotal: TextView
     private lateinit var tvOrderSummary: TextView
 
@@ -40,8 +40,22 @@ class CheckoutActivity : AppCompatActivity() {
     private lateinit var btnPlaceOrder: Button
     private lateinit var btnBack: ImageButton
 
+    private lateinit var layoutCheckoutContent: LinearLayout
+    private lateinit var layoutCheckoutSuccess: LinearLayout
+    private lateinit var tvSuccessMessage: TextView
+    private lateinit var btnViewOrderSuccess: Button
+    private lateinit var btnGoHomeSuccess: Button
+
     private lateinit var sessionManager: SessionManager
+
     private var totalAmount: Double = 0.0
+    private var selectedCartItemIds: IntArray = intArrayOf()
+    private var currentOrderId: Int = 0
+
+    private var productNames: Array<String> = emptyArray()
+    private var productPrices: DoubleArray = doubleArrayOf()
+    private var productQuantities: IntArray = intArrayOf()
+    private var productTotals: DoubleArray = doubleArrayOf()
 
     private val currencyFormatter: NumberFormat =
         NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
@@ -61,11 +75,12 @@ class CheckoutActivity : AppCompatActivity() {
 
         bindViews()
         setupDefaultUserInfo()
+        receiveSelectedCartItems()
         setupEvents()
-        loadCartTotal()
     }
 
     private fun bindViews() {
+        tvCheckoutTitle = findViewById(R.id.tvCheckoutTitle)
         tvTotal = findViewById(R.id.tvTotal)
         tvOrderSummary = findViewById(R.id.tvOrderSummary)
 
@@ -79,6 +94,12 @@ class CheckoutActivity : AppCompatActivity() {
         rgPayment = findViewById(R.id.rgPayment)
         btnPlaceOrder = findViewById(R.id.btnPlaceOrder)
         btnBack = findViewById(R.id.btnBack)
+
+        layoutCheckoutContent = findViewById(R.id.layoutCheckoutContent)
+        layoutCheckoutSuccess = findViewById(R.id.layoutCheckoutSuccess)
+        tvSuccessMessage = findViewById(R.id.tvSuccessMessage)
+        btnViewOrderSuccess = findViewById(R.id.btnViewOrderSuccess)
+        btnGoHomeSuccess = findViewById(R.id.btnGoHomeSuccess)
     }
 
     private fun setupDefaultUserInfo() {
@@ -94,89 +115,75 @@ class CheckoutActivity : AppCompatActivity() {
         btnBack.setOnClickListener {
             finish()
         }
+
+        btnViewOrderSuccess.setOnClickListener {
+            val intent = Intent(this, HistoryActivity::class.java)
+            intent.putExtra("ORDER_ID", currentOrderId)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+            finish()
+        }
+
+        btnGoHomeSuccess.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+            finish()
+        }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun loadCartTotal() {
-        tvOrderSummary.text = "Đang tải thông tin đơn hàng..."
+    private fun receiveSelectedCartItems() {
+        selectedCartItemIds = intent.getIntArrayExtra("selected_cart_item_ids") ?: intArrayOf()
+        productNames = intent.getStringArrayExtra("product_names") ?: emptyArray()
+        productPrices = intent.getDoubleArrayExtra("product_prices") ?: doubleArrayOf()
+        productQuantities = intent.getIntArrayExtra("product_quantities") ?: intArrayOf()
+        productTotals = intent.getDoubleArrayExtra("product_totals") ?: doubleArrayOf()
+        totalAmount = intent.getDoubleExtra("total_amount", 0.0)
 
-        ApiClient.apiService.getCartByUser(sessionManager.getUserId())
-            .enqueue(object : Callback<CartResponse> {
+        if (totalAmount <= 0.0) {
+            totalAmount = productTotals.sum()
+        }
 
-                @SuppressLint("SetTextI18n")
-                override fun onResponse(
-                    call: Call<CartResponse>,
-                    response: Response<CartResponse>
-                ) {
-                    if (response.isSuccessful && response.body() != null) {
-                        val cartResponse = response.body()!!
+        if (selectedCartItemIds.isEmpty() || productNames.isEmpty()) {
+            tvOrderSummary.text = "Không có sản phẩm nào được chọn"
+            tvTotal.text = "Tổng thanh toán: ${currencyFormatter.format(0)}"
 
-                        totalAmount = cartResponse.totalAmount
-                        tvTotal.text = "Tổng thanh toán: ${currencyFormatter.format(totalAmount)}"
+            Toast.makeText(
+                this,
+                "Không có sản phẩm nào được chọn để thanh toán",
+                Toast.LENGTH_SHORT
+            ).show()
 
-                        tvOrderSummary.text = buildOrderSummary(cartResponse)
-                    } else {
-                        tvOrderSummary.text = "Không tải được thông tin đơn hàng"
+            return
+        }
 
-                        Toast.makeText(
-                            this@CheckoutActivity,
-                            "Không tải được tổng tiền",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-                @SuppressLint("SetTextI18n")
-                override fun onFailure(call: Call<CartResponse>, t: Throwable) {
-                    tvOrderSummary.text = "Không tải được thông tin đơn hàng"
-
-                    Toast.makeText(
-                        this@CheckoutActivity,
-                        "Không tải được tổng tiền: ${t.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            })
+        tvTotal.text = "Tổng thanh toán: ${currencyFormatter.format(totalAmount)}"
+        tvOrderSummary.text = buildSelectedOrderSummary()
     }
 
-    private fun buildOrderSummary(cartResponse: CartResponse): String {
-        val items = getCartItemsByReflection(cartResponse)
-
-        if (items.isEmpty()) {
+    private fun buildSelectedOrderSummary(): String {
+        if (productNames.isEmpty()) {
             return "Sản phẩm: Chưa có sản phẩm\nSố lượng: 0\nGiá: ${currencyFormatter.format(0)}"
         }
 
         val builder = StringBuilder()
         var totalQuantity = 0
 
-        items.forEachIndexed { index, item ->
-            val productName = getValueFromObject(
-                item,
-                listOf("productName", "name", "productTitle", "title")
-            )?.toString() ?: "Sản phẩm"
-
-            val quantity = getValueFromObject(
-                item,
-                listOf("quantity", "qty", "soLuong")
-            )?.toString()?.toIntOrNull() ?: 0
-
-            val priceValue = getValueFromObject(
-                item,
-                listOf("price", "unitPrice", "productPrice", "gia")
-            )?.toString()?.toDoubleOrNull() ?: 0.0
-
-            val totalItemPrice = getValueFromObject(
-                item,
-                listOf("totalPrice", "subTotal", "subtotal", "amount")
-            )?.toString()?.toDoubleOrNull() ?: (priceValue * quantity)
+        for (i in productNames.indices) {
+            val name = productNames.getOrNull(i) ?: "Sản phẩm"
+            val price = productPrices.getOrNull(i) ?: 0.0
+            val quantity = productQuantities.getOrNull(i) ?: 1
+            val itemTotal = productTotals.getOrNull(i) ?: (price * quantity)
 
             totalQuantity += quantity
 
-            builder.append("${index + 1}. $productName\n")
+            builder.append("${i + 1}. $name\n")
             builder.append("   Số lượng: $quantity\n")
-            builder.append("   Giá: ${currencyFormatter.format(totalItemPrice)}")
+            builder.append("   Đơn giá: ${currencyFormatter.format(price)}\n")
+            builder.append("   Thành tiền: ${currencyFormatter.format(itemTotal)}")
 
-            if (index != items.size - 1) {
+            if (i != productNames.size - 1) {
                 builder.append("\n\n")
             }
         }
@@ -185,59 +192,6 @@ class CheckoutActivity : AppCompatActivity() {
         builder.append("\nTổng tiền: ${currencyFormatter.format(totalAmount)}")
 
         return builder.toString()
-    }
-
-    private fun getCartItemsByReflection(cartResponse: CartResponse): List<Any> {
-        val possibleFieldNames = listOf(
-            "items",
-            "cartItems",
-            "cartDetails",
-            "details",
-            "products"
-        )
-
-        for (fieldName in possibleFieldNames) {
-            val value = getValueFromObject(cartResponse, listOf(fieldName))
-
-            if (value is List<*>) {
-                return value.filterNotNull()
-            }
-        }
-
-        return emptyList()
-    }
-
-    private fun getValueFromObject(obj: Any, possibleNames: List<String>): Any? {
-        for (name in possibleNames) {
-            try {
-                val field = obj.javaClass.declaredFields.firstOrNull {
-                    it.name.equals(name, ignoreCase = true)
-                }
-
-                if (field != null) {
-                    field.isAccessible = true
-                    return field.get(obj)
-                }
-            } catch (_: Exception) {
-            }
-
-            try {
-                val methodName = "get" + name.replaceFirstChar {
-                    if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-                }
-
-                val method = obj.javaClass.methods.firstOrNull {
-                    it.name.equals(methodName, ignoreCase = true)
-                }
-
-                if (method != null) {
-                    return method.invoke(obj)
-                }
-            } catch (_: Exception) {
-            }
-        }
-
-        return null
     }
 
     @SuppressLint("SetTextI18n")
@@ -249,15 +203,54 @@ class CheckoutActivity : AppCompatActivity() {
         val district = edtDistrict.text.toString().trim()
         val city = edtCity.text.toString().trim()
 
-        if (
-            receiverName.isEmpty() ||
-            phone.isEmpty() ||
-            street.isEmpty() ||
-            ward.isEmpty() ||
-            district.isEmpty() ||
-            city.isEmpty()
-        ) {
-            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show()
+        if (receiverName.isEmpty()) {
+            edtReceiverName.error = "Vui lòng nhập tên người nhận"
+            edtReceiverName.requestFocus()
+            return
+        }
+
+        if (phone.isEmpty()) {
+            edtPhone.error = "Vui lòng nhập số điện thoại"
+            edtPhone.requestFocus()
+            return
+        }
+
+        if (phone.length !in 9..11) {
+            edtPhone.error = "Số điện thoại không hợp lệ"
+            edtPhone.requestFocus()
+            return
+        }
+
+        if (street.isEmpty()) {
+            edtStreet.error = "Vui lòng nhập địa chỉ"
+            edtStreet.requestFocus()
+            return
+        }
+
+        if (ward.isEmpty()) {
+            edtWard.error = "Vui lòng nhập phường/xã"
+            edtWard.requestFocus()
+            return
+        }
+
+        if (district.isEmpty()) {
+            edtDistrict.error = "Vui lòng nhập quận/huyện"
+            edtDistrict.requestFocus()
+            return
+        }
+
+        if (city.isEmpty()) {
+            edtCity.error = "Vui lòng nhập tỉnh/thành phố"
+            edtCity.requestFocus()
+            return
+        }
+
+        if (selectedCartItemIds.isEmpty()) {
+            Toast.makeText(
+                this,
+                "Không có sản phẩm nào được chọn để đặt hàng",
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
 
@@ -277,7 +270,8 @@ class CheckoutActivity : AppCompatActivity() {
             city = city,
             district = district,
             ward = ward,
-            paymentMethod = paymentMethod
+            paymentMethod = paymentMethod,
+            cartItemIds = selectedCartItemIds.toList()
         )
 
         ApiClient.apiService.checkout(request)
@@ -302,17 +296,17 @@ class CheckoutActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        showSuccessDialog(orderId)
+                        showCheckoutSuccess(orderId)
                     } else {
                         val errorMessage = try {
                             response.errorBody()?.string()
                         } catch (e: Exception) {
-                            null
+                            e.message
                         } ?: "Đặt hàng thất bại"
 
                         Toast.makeText(
                             this@CheckoutActivity,
-                            errorMessage,
+                            "Lỗi ${response.code()}: $errorMessage",
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -331,35 +325,16 @@ class CheckoutActivity : AppCompatActivity() {
             })
     }
 
-    private fun showSuccessDialog(orderId: Int) {
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_success, null)
+    @SuppressLint("SetTextI18n")
+    private fun showCheckoutSuccess(orderId: Int) {
+        currentOrderId = orderId
 
-        val dialog = AlertDialog.Builder(this)
-            .setView(dialogView)
-            .setCancelable(false)
-            .create()
+        tvCheckoutTitle.text = "Hoàn Tất Đơn Hàng"
 
-        dialogView.findViewById<Button>(R.id.btnViewOrder).setOnClickListener {
-            dialog.dismiss()
+        tvSuccessMessage.text =
+            "Cảm ơn bạn đã ủng hộ Bakery Store.\nMã đơn hàng: #$orderId\nTổng thanh toán: ${currencyFormatter.format(totalAmount)}\nĐơn hàng của bạn đang được xử lý."
 
-            val intent = Intent(this, HistoryActivity::class.java)
-            intent.putExtra("ORDER_ID", orderId)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            startActivity(intent)
-            finish()
-        }
-
-        dialogView.findViewById<Button>(R.id.btnGoHome).setOnClickListener {
-            dialog.dismiss()
-
-            val intent = Intent(this, HomeActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            startActivity(intent)
-            finish()
-        }
-
-        dialog.show()
-
-        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        layoutCheckoutContent.visibility = View.GONE
+        layoutCheckoutSuccess.visibility = View.VISIBLE
     }
 }

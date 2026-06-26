@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,9 +25,11 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Quay lại"
                 android:src="@drawable/ic_back"
                 android:padding="12dp"
-                app:tint="@color/brown_text" />
+                app:tint="@color/brown_text"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:layout_width="0dp"
@@ -37,15 +40,50 @@
                 android:textColor="@color/brown_text"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:fontFamily="serif" />
+                android:fontFamily="serif"
+                tools:ignore="HardcodedText" />
 
         </LinearLayout>
+
+        <!-- Avatar -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="28dp"
+            app:cardCornerRadius="65dp"
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="@color/white">
+
+            <ImageView
+                android:id="@+id/imgAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Ảnh đại diện"
+                android:scaleType="centerCrop"
+                android:src="@drawable/avatar1"
+                tools:ignore="HardcodedText" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tvProfileAvatarTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="Thành viên Bakery Store"
+            android:textColor="@color/brown_text"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:fontFamily="serif"
+            tools:ignore="HardcodedText" />
 
         <!-- Section: Thông tin cá nhân -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="26dp"
             android:layout_marginBottom="10dp"
             android:text="Thông tin cá nhân"
             android:textColor="@color/brown_text"
@@ -83,6 +121,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:textColor="@color/brown_text"
+                    android:textColorHint="@color/soft_gray"
                     android:textSize="16sp"
                     android:fontFamily="serif" />
 
@@ -111,6 +150,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:textColor="@color/soft_gray"
+                    android:textColorHint="@color/soft_gray"
                     android:textSize="16sp"
                     android:fontFamily="serif" />
 
@@ -139,6 +179,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:textColor="@color/soft_gray"
+                    android:textColorHint="@color/soft_gray"
                     android:textSize="16sp"
                     android:fontFamily="serif" />
 
@@ -191,6 +232,8 @@
                     android:inputType="textPassword"
                     android:padding="12dp"
                     android:layout_marginBottom="12dp"
+                    android:textColor="@color/brown_text"
+                    android:textColorHint="@color/soft_gray"
                     android:textSize="14sp"
                     android:fontFamily="serif" />
 
@@ -203,6 +246,8 @@
                     android:inputType="textPassword"
                     android:padding="12dp"
                     android:layout_marginBottom="12dp"
+                    android:textColor="@color/brown_text"
+                    android:textColorHint="@color/soft_gray"
                     android:textSize="14sp"
                     android:fontFamily="serif" />
 
@@ -215,6 +260,8 @@
                     android:inputType="textPassword"
                     android:padding="12dp"
                     android:layout_marginBottom="16dp"
+                    android:textColor="@color/brown_text"
+                    android:textColorHint="@color/soft_gray"
                     android:textSize="14sp"
                     android:fontFamily="serif" />
 

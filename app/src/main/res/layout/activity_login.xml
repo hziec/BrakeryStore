@@ -57,18 +57,36 @@
                 android:textColor="@color/brown_text"
                 android:textColorHint="@color/soft_gray" />
 
-            <EditText
-                android:id="@+id/edtPassword"
+            <!-- Ô mật khẩu có nút con mắt -->
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:layout_marginTop="14dp"
-                android:background="@drawable/bg_input"
-                android:hint="Mật khẩu"
-                android:inputType="textPassword"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:textColor="@color/brown_text"
-                android:textColorHint="@color/soft_gray" />
+                android:layout_marginTop="14dp">
+
+                <EditText
+                    android:id="@+id/edtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_input"
+                    android:hint="Mật khẩu"
+                    android:inputType="textPassword"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="52dp"
+                    android:textColor="@color/brown_text"
+                    android:textColorHint="@color/soft_gray" />
+
+                <TextView
+                    android:id="@+id/btnTogglePassword"
+                    android:layout_width="48dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end|center_vertical"
+                    android:gravity="center"
+                    android:text="👁"
+                    android:textSize="20sp"
+                    android:textColor="@color/soft_gray"
+                    android:background="?attr/selectableItemBackground" />
+
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/tvForgotPassword"

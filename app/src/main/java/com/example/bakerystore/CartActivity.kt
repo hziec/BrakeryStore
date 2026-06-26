@@ -1,5 +1,6 @@
 package com.example.bakerystore
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -92,7 +93,49 @@ class CartActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            startActivity(Intent(this, CheckoutActivity::class.java))
+            val intent = Intent(this, CheckoutActivity::class.java)
+
+            intent.putExtra(
+                "selected_cart_item_ids",
+                selectedItems.map { it.cartItemId }.toIntArray()
+            )
+
+            intent.putExtra(
+                "product_ids",
+                selectedItems.map { it.productId }.toIntArray()
+            )
+
+            intent.putExtra(
+                "product_names",
+                selectedItems.map { it.productName }.toTypedArray()
+            )
+
+            intent.putExtra(
+                "product_images",
+                selectedItems.map { it.imageUrl ?: "" }.toTypedArray()
+            )
+
+            intent.putExtra(
+                "product_prices",
+                selectedItems.map { it.price }.toDoubleArray()
+            )
+
+            intent.putExtra(
+                "product_quantities",
+                selectedItems.map { it.quantity }.toIntArray()
+            )
+
+            intent.putExtra(
+                "product_totals",
+                selectedItems.map { it.total }.toDoubleArray()
+            )
+
+            intent.putExtra(
+                "total_amount",
+                selectedItems.sumOf { it.total }
+            )
+
+            startActivity(intent)
         }
 
         btnDeleteSelected.setOnClickListener {
@@ -180,6 +223,7 @@ class CartActivity : AppCompatActivity() {
                     response: Response<MessageResponse>
                 ) {
                     if (response.isSuccessful) {
+                        selectedIds.remove(cartItemId)
                         loadCart()
                     } else {
                         Toast.makeText(
@@ -200,6 +244,7 @@ class CartActivity : AppCompatActivity() {
             })
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateTotal() {
         val formatter = NumberFormat.getCurrencyInstance(Locale("vi", "VN"))
         val total = cartAdapter.getSelectedItems().sumOf { it.total }

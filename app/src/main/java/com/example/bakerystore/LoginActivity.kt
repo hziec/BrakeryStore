@@ -2,6 +2,7 @@ package com.example.bakerystore
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
@@ -23,7 +24,10 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var btnLogin: Button
     private lateinit var tvGoRegister: TextView
     private lateinit var tvForgotPassword: TextView
+    private lateinit var btnTogglePassword: TextView
     private lateinit var sessionManager: SessionManager
+
+    private var isPasswordVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +47,11 @@ class LoginActivity : AppCompatActivity() {
         btnLogin = findViewById(R.id.btnLogin)
         tvGoRegister = findViewById(R.id.tvGoRegister)
         tvForgotPassword = findViewById(R.id.tvForgotPassword)
+        btnTogglePassword = findViewById(R.id.btnTogglePassword)
+
+        btnTogglePassword.setOnClickListener {
+            togglePasswordVisibility()
+        }
 
         btnLogin.setOnClickListener {
             handleLogin()
@@ -55,6 +64,22 @@ class LoginActivity : AppCompatActivity() {
         tvForgotPassword.setOnClickListener {
             startActivity(Intent(this, ForgetPasswordActivity::class.java))
         }
+    }
+
+    private fun togglePasswordVisibility() {
+        if (isPasswordVisible) {
+            edtPassword.inputType =
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            btnTogglePassword.text = "👁"
+            isPasswordVisible = false
+        } else {
+            edtPassword.inputType =
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            btnTogglePassword.text = "🙈"
+            isPasswordVisible = true
+        }
+
+        edtPassword.setSelection(edtPassword.text.length)
     }
 
     private fun handleLogin() {

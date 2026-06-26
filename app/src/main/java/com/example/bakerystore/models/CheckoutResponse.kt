@@ -6,7 +6,7 @@ data class CheckoutResponse(
     @SerializedName(value = "message", alternate = ["Message"])
     val message: String? = null,
 
-    @SerializedName(value = "orderId", alternate = ["OrderId"])
+    @SerializedName(value = "orderId", alternate = ["OrderId", "id", "Id"])
     val orderId: Int = 0,
 
     @SerializedName(value = "totalAmount", alternate = ["TotalAmount"])
