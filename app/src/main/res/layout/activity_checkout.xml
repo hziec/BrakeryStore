@@ -51,6 +51,45 @@
             android:textStyle="bold"
             android:fontFamily="serif" />
 
+        <!-- Thông tin đơn hàng -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardOrderInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvOrderInfoTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Thông tin đơn hàng"
+                    android:textColor="@color/brown_text"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:fontFamily="serif" />
+
+                <TextView
+                    android:id="@+id/tvOrderSummary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Sản phẩm: Đang tải...\nSố lượng: 0\nGiá: 0 ₫"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:lineSpacingExtra="6dp"
+                    android:fontFamily="serif" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <!-- Form Địa chỉ -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

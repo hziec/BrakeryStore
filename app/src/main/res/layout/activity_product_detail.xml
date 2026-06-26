@@ -23,8 +23,10 @@
                 android:id="@+id/imgProductLarge"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="Hình ảnh sản phẩm"
                 android:scaleType="centerCrop"
-                app:layout_collapseMode="parallax" />
+                app:layout_collapseMode="parallax"
+                tools:ignore="HardcodedText" />
 
             <View
                 android:layout_width="match_parent"
@@ -37,6 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
+                app:navigationContentDescription="Quay lại"
                 app:navigationIcon="@drawable/ic_back_circle" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -127,8 +130,10 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Giảm số lượng"
                         android:src="@drawable/ic_minus"
-                        app:tint="@color/brown_text" />
+                        app:tint="@color/brown_text"
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/tvQuantityDetail"
@@ -146,8 +151,10 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Tăng số lượng"
                         android:src="@drawable/ic_plus"
-                        app:tint="@color/brown_text" />
+                        app:tint="@color/brown_text"
+                        tools:ignore="HardcodedText" />
 
                 </LinearLayout>
 
@@ -212,8 +219,10 @@
             android:layout_height="56dp"
             android:layout_marginEnd="12dp"
             android:background="@drawable/bg_button_outline"
+            android:contentDescription="Yêu thích sản phẩm"
             android:src="@drawable/ic_heart"
-            app:tint="@color/pink_dark" />
+            app:tint="@color/pink_dark"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/btnAddToCartDetail"
